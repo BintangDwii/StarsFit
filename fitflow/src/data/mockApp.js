@@ -1,0 +1,320 @@
+const today = new Date();
+
+export function dayOffset(days) {
+  const date = new Date(today);
+  date.setDate(date.getDate() + days);
+  return date.toISOString().slice(0, 10);
+}
+
+export const demoWorkspace = {
+  id: 'a0000000-0000-0000-0000-000000000001',
+  name: 'My Workspace',
+  studio: 'Personal Training',
+  trainer: 'Bintang Kuat',
+  role: 'owner',
+  timezone: 'Asia/Makassar',
+};
+
+export const demoMembers = [
+  {
+    id: 'm1',
+    name: 'Andi Pratama',
+    initials: 'AP',
+    email: 'andi@fitflow.test',
+    phone: '0812-3456-7890',
+    status: 'active',
+    role: 'member',
+    goal: 'Fat Loss',
+    height: 172,
+    birthDate: '1995-04-12',
+    joinedAt: '2026-08-12',
+    notes: 'Sering latihan pagi. Fokus pada kardio.',
+    quota: {
+      id: 'q1',
+      available: 1,
+      total: 12,
+      reserved: 0,
+      consumed: 11,
+      expiresAt: dayOffset(30),
+      unlimited: false,
+      status: 'active',
+      history: [
+        { id: 'h1', type: 'grant', quantity: 12, description: 'Initial quota by PT', date: dayOffset(-90) },
+        { id: 'h2', type: 'consumed', quantity: 0, description: 'Session completed', date: dayOffset(-3) },
+      ],
+    },
+  },
+  {
+    id: 'm2',
+    name: 'Sarah Putri',
+    initials: 'SP',
+    email: 'sarah@fitflow.test',
+    phone: '0813-2222-1101',
+    status: 'active',
+    role: 'member',
+    goal: 'Muscle Building',
+    height: 165,
+    birthDate: '1998-11-02',
+    joinedAt: '2026-07-03',
+    notes: 'Target deadlift 80kg.',
+    quota: {
+      id: 'q2',
+      available: 2,
+      total: 8,
+      reserved: 0,
+      consumed: 6,
+      expiresAt: dayOffset(18),
+      unlimited: false,
+      status: 'active',
+      history: [
+        { id: 'h3', type: 'grant', quantity: 8, description: 'Package 8 sessions', date: dayOffset(-60) },
+      ],
+    },
+  },
+  {
+    id: 'm3',
+    name: 'Budi Santoso',
+    initials: 'BS',
+    email: 'budi@fitflow.test',
+    phone: '0857-9000-3321',
+    status: 'active',
+    role: 'member',
+    goal: 'Strength Training',
+    height: 178,
+    birthDate: '1992-09-03',
+    joinedAt: '2026-09-21',
+    notes: 'Perlu pendampingan squat.',
+    quota: {
+      id: 'q3',
+      available: 1,
+      total: 10,
+      reserved: 0,
+      consumed: 9,
+      expiresAt: dayOffset(12),
+      unlimited: false,
+      status: 'active',
+      history: [
+        { id: 'h4', type: 'grant', quantity: 10, description: 'Package 10 sessions', date: dayOffset(-50) },
+      ],
+    },
+  },
+  {
+    id: 'm4',
+    name: 'Nadia Amelia',
+    initials: 'NA',
+    email: 'nadia@fitflow.test',
+    phone: '0821-4567-8890',
+    status: 'active',
+    role: 'member',
+    goal: 'Full Body Workout',
+    height: 160,
+    birthDate: '1997-02-18',
+    joinedAt: '2026-10-05',
+    notes: '',
+    quota: {
+      id: 'q4',
+      available: 4,
+      total: 12,
+      reserved: 0,
+      consumed: 8,
+      expiresAt: dayOffset(45),
+      unlimited: false,
+      status: 'active',
+      history: [
+        { id: 'h5', type: 'grant', quantity: 12, description: 'Package 12 sessions', date: dayOffset(-30) },
+      ],
+    },
+  },
+  {
+    id: 'm5',
+    name: 'Rizky Ramadhan',
+    initials: 'RR',
+    email: 'rizky@fitflow.test',
+    phone: '0811-7788-9900',
+    status: 'active',
+    role: 'member',
+    goal: 'Fat Loss',
+    height: 175,
+    birthDate: '1994-06-25',
+    joinedAt: '2026-06-14',
+    notes: '',
+    quota: {
+      id: 'q5',
+      available: 6,
+      total: 12,
+      reserved: 0,
+      consumed: 6,
+      expiresAt: dayOffset(60),
+      unlimited: false,
+      status: 'active',
+      history: [
+        { id: 'h6', type: 'grant', quantity: 12, description: 'Package 12 sessions', date: dayOffset(-70) },
+      ],
+    },
+  },
+  {
+    id: 'm6',
+    name: 'Dewi Anggraini',
+    initials: 'DA',
+    email: 'dewi@fitflow.test',
+    phone: '0812-9988-7766',
+    status: 'inactive',
+    role: 'member',
+    goal: 'Rehab',
+    height: 158,
+    birthDate: '1991-12-10',
+    joinedAt: '2026-05-20',
+    notes: 'Non-aktif sementara.',
+    quota: {
+      id: 'q6',
+      available: 0,
+      total: 8,
+      reserved: 0,
+      consumed: 8,
+      expiresAt: dayOffset(-5),
+      unlimited: false,
+      status: 'expired',
+      history: [
+        { id: 'h7', type: 'grant', quantity: 8, description: 'Package 8 sessions', date: dayOffset(-100) },
+      ],
+    },
+  },
+  {
+    id: 'm7',
+    name: 'Fajar Nugraha',
+    initials: 'FN',
+    email: 'fajar@fitflow.test',
+    phone: '0838-1122-3344',
+    status: 'active',
+    role: 'member',
+    goal: 'Muscle Building',
+    height: 170,
+    birthDate: '1999-08-30',
+    joinedAt: '2026-10-28',
+    notes: '',
+    quota: {
+      id: 'q7',
+      available: 2,
+      total: 10,
+      reserved: 0,
+      consumed: 8,
+      expiresAt: dayOffset(25),
+      unlimited: false,
+      status: 'active',
+      history: [
+        { id: 'h8', type: 'grant', quantity: 10, description: 'Package 10 sessions', date: dayOffset(-22) },
+      ],
+    },
+  },
+  {
+    id: 'm8',
+    name: 'Sinta Maharani',
+    initials: 'SM',
+    email: 'sinta@fitflow.test',
+    phone: '0856-4433-2211',
+    status: 'active',
+    role: 'member',
+    goal: 'General Fitness',
+    height: 163,
+    birthDate: '1996-03-17',
+    joinedAt: '2026-11-01',
+    notes: 'Unlimited membership.',
+    quota: {
+      id: 'q8',
+      available: 1,
+      total: 1,
+      reserved: 0,
+      consumed: 0,
+      expiresAt: null,
+      unlimited: true,
+      status: 'active',
+      history: [
+        { id: 'h9', type: 'grant', quantity: 1, description: 'Unlimited membership (audit)', date: dayOffset(-19) },
+      ],
+    },
+  },
+];
+
+export const demoTrainers = [
+  { id: 't1', name: 'Bintang Kuat', initials: 'BK', role: 'owner' },
+  { id: 't2', name: 'Andi Trainer', initials: 'AT', role: 'trainer' },
+];
+
+export const demoBookings = [
+  { id: 'bk1', memberId: 'm1', memberName: 'Andi Pratama', trainerId: 't1', date: dayOffset(0), start: '07:00', end: '08:00', status: 'confirmed', note: '' },
+  { id: 'bk2', memberId: 'm2', memberName: 'Sarah Putri', trainerId: 't1', date: dayOffset(0), start: '09:00', end: '10:00', status: 'confirmed', note: '' },
+  { id: 'bk3', memberId: 'm3', memberName: 'Budi Santoso', trainerId: 't1', date: dayOffset(0), start: '13:00', end: '14:00', status: 'pending', note: 'Bisa mundur 30 menit?' },
+  { id: 'bk4', memberId: 'm4', memberName: 'Nadia Amelia', trainerId: 't1', date: dayOffset(0), start: '16:00', end: '17:00', status: 'confirmed', note: '' },
+  { id: 'bk5', memberId: 'm5', memberName: 'Rizky Ramadhan', trainerId: 't1', date: dayOffset(1), start: '08:00', end: '09:00', status: 'pending', note: '' },
+  { id: 'bk6', memberId: 'm7', memberName: 'Fajar Nugraha', trainerId: 't1', date: dayOffset(1), start: '10:00', end: '11:00', status: 'pending', note: '' },
+  { id: 'bk7', memberId: 'm8', memberName: 'Sinta Maharani', trainerId: 't1', date: dayOffset(2), start: '15:00', end: '16:00', status: 'confirmed', note: '' },
+  { id: 'bk8', memberId: 'm1', memberName: 'Andi Pratama', trainerId: 't1', date: dayOffset(2), start: '07:00', end: '08:00', status: 'checked_in', note: '' },
+  { id: 'bk9', memberId: 'm2', memberName: 'Sarah Putri', trainerId: 't2', date: dayOffset(3), start: '11:00', end: '12:00', status: 'confirmed', note: '' },
+  { id: 'bk10', memberId: 'm5', memberName: 'Rizky Ramadhan', trainerId: 't1', date: dayOffset(-2), start: '09:00', end: '10:00', status: 'completed', note: '' },
+  { id: 'bk11', memberId: 'm7', memberName: 'Fajar Nugraha', trainerId: 't1', date: dayOffset(-5), start: '13:00', end: '14:00', status: 'no_show', note: '' },
+  { id: 'bk12', memberId: 'm4', memberName: 'Nadia Amelia', trainerId: 't1', date: dayOffset(4), start: '14:00', end: '15:00', status: 'cancelled', note: '' },
+];
+
+export const demoPrograms = [
+  {
+    id: 'p1',
+    memberId: 'm1',
+    title: 'Fat Loss Phase 1',
+    startDate: dayOffset(-14),
+    endDate: dayOffset(46),
+    isActive: true,
+    days: [
+      { id: 'pd1', dayName: 'Senin', exercises: [
+        { id: 'e1', name: 'Barbell Squat', sets: 3, reps: 12, targetWeight: 60, restSeconds: 60 },
+        { id: 'e2', name: 'Bench Press', sets: 3, reps: 10, targetWeight: 45, restSeconds: 60 },
+      ] },
+      { id: 'pd2', dayName: 'Rabu', exercises: [
+        { id: 'e3', name: 'Deadlift', sets: 3, reps: 8, targetWeight: 70, restSeconds: 90 },
+        { id: 'e4', name: 'Pull Up', sets: 3, reps: 10, targetWeight: null, restSeconds: 60 },
+      ] },
+    ],
+  },
+  {
+    id: 'p2',
+    memberId: 'm2',
+    title: 'Strength Builder',
+    startDate: dayOffset(-30),
+    endDate: dayOffset(30),
+    isActive: true,
+    days: [
+      { id: 'pd3', dayName: 'Selasa', exercises: [
+        { id: 'e5', name: 'Overhead Press', sets: 4, reps: 8, targetWeight: 40, restSeconds: 90 },
+      ] },
+    ],
+  },
+  {
+    id: 'p3',
+    memberId: 'm4',
+    title: 'Full Body Foundation',
+    startDate: dayOffset(-7),
+    endDate: dayOffset(53),
+    isActive: true,
+    days: [],
+  },
+];
+
+export const demoProgress = {
+  m1: [
+    { id: 'pr1', date: dayOffset(-60), weight: 78.4, bodyFat: 24.1, waist: 86 },
+    { id: 'pr2', date: dayOffset(-30), weight: 76.8, bodyFat: 22.5, waist: 83 },
+    { id: 'pr3', date: dayOffset(-2), weight: 75.2, bodyFat: 21.0, waist: 81 },
+  ],
+  m2: [
+    { id: 'pr4', date: dayOffset(-45), weight: 62.1, bodyFat: 27.0, waist: 72 },
+    { id: 'pr5', date: dayOffset(-1), weight: 63.4, bodyFat: 25.2, waist: 70 },
+  ],
+  m4: [
+    { id: 'pr6', date: dayOffset(-20), weight: 55.2, bodyFat: 26.5, waist: 68 },
+  ],
+};
+
+export const demoNotifications = [
+  { id: 'n1', title: 'Booking baru', body: 'Rizky Ramadhan meminta sesi besok 08:00.', date: dayOffset(0), read: false },
+  { id: 'n2', title: 'Kuota hampir habis', body: 'Andi Pratama tersisa 1 sesi.', date: dayOffset(0), read: false },
+  { id: 'n3', title: 'Sesi selesai', body: 'Rizky Ramadhan menyelesaikan sesi latihan.', date: dayOffset(-2), read: true },
+];
