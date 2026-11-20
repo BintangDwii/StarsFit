@@ -58,6 +58,8 @@ Migrations `supabase/migrations/001–015` dan `seed.sql` sudah dibuat dan dival
 - RPC migrations `010–015` ✅ selesai.
 - Auth, route guard, tenant context, realtime (F15) ✅ kode selesai.
 - Cron expiry `016` ✅ selesai.
+- Keputusan produk reschedule/durasi/progress ✅ (`frontend/17-product-decisions.md`).
+- Script live smoke ✅ tersedia (`npm run smoke:live`).
 - Uji dengan project Supabase asli ⏳ tertunda (kredensial belum tersedia).
 - RLS audit final ⏳ tertunda.
 

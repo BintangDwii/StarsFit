@@ -47,7 +47,7 @@ Interaksi yang diuji: tambah member (8→9 baris), navigasi detail, tab Quota, p
 
 ## Backend
 
-- 20 migrasi SQL (001–020) + `seed.sql` berhasil dijalankan di Postgres 15 lokal.
+- 22 migrasi SQL (001–022) + `seed.sql` berhasil dijalankan di Postgres 15 lokal.
 - RPC lifecycle test: request → approve (idempotent) → check-in → complete → ledger reservation -1 + consumed 0, saldo 12→11 tanpa double deduction.
 
 ## Metode Screenshot
@@ -70,6 +70,10 @@ Screenshot disimpan di root project `fitflow/` untuk evaluasi visual, bukan arte
 | Migrasi `016`–`020` + seed | ✅ lolos di Postgres 15 lokal |
 | Isolasi trainer (assign/unassign) | ✅ 4 → 3 → 2 member terlihat |
 | Exercise scope | ✅ 5 global + 1 studio exercise |
+| Tenant settings | ✅ default 60/120 → 45/90 tersimpan |
+| Progress input member | ✅ 1 catatan baru dari member |
+| Reschedule portal | ✅ modal terbuka & jadwal tersimpan |
+| Settings save | ✅ indikator "Tersimpan" muncul |
 | RPC lifecycle setelah RLS hardening | ✅ lolos (check-in→complete tidak gagal) |
 | Reminder & notifikasi (`017`) | ✅ 1 reminder 24h dibuat, `get_my_notifications` & `mark_all_notifications_read` lolos |
 | Build & lint | ✅ bersih, tidak ada chunk warning |

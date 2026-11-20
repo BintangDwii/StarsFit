@@ -13,6 +13,7 @@ import {
   demoNotifications,
   demoProgress,
   demoPrograms,
+  demoTenantSettings,
   demoTrainers,
   demoWorkspace,
   dayOffset,
@@ -39,6 +40,7 @@ export function WorkspaceProvider({ children }) {
   const [notifications, setNotifications] = useState(demoNotifications);
   const [assignments, setAssignments] = useState(demoAssignments);
   const [exercises, setExercises] = useState(demoExercises);
+  const [tenantSettings, setTenantSettings] = useState(demoTenantSettings);
   const [loading, setLoading] = useState(false);
 
   const { tenantId: authTenantId, user } = useAuth();
@@ -49,12 +51,14 @@ export function WorkspaceProvider({ children }) {
 
     setLoading(true);
     try {
-      const [data, items, assignmentRows, exerciseRows] = await Promise.all([
-        fetchWorkspaceData(tenantId),
-        fetchNotifications(tenantId),
-        rpc('list_assignments', { p_tenant: tenantId }),
-        rpc('list_exercises', { p_tenant: tenantId }),
-      ]);
+      const [data, items, assignmentRows, exerciseRows, settings] =
+        await Promise.all([
+          fetchWorkspaceData(tenantId),
+          fetchNotifications(tenantId),
+          rpc('list_assignments', { p_tenant: tenantId }),
+          rpc('list_exercises', { p_tenant: tenantId }),
+          rpc('get_tenant_settings', { p_tenant: tenantId }),
+        ]);
       setMembers(data.members);
       setBookings(data.bookings);
       setNotifications(items);
@@ -69,6 +73,7 @@ export function WorkspaceProvider({ children }) {
           isGlobal: exercise.is_global,
         }))
       );
+      setTenantSettings(settings);
     } finally {
       setLoading(false);
     }
@@ -80,12 +85,14 @@ export function WorkspaceProvider({ children }) {
     let active = true;
 
     (async () => {
-      const [data, items, assignmentRows, exerciseRows] = await Promise.all([
-        fetchWorkspaceData(tenantId),
-        fetchNotifications(tenantId),
-        rpc('list_assignments', { p_tenant: tenantId }),
-        rpc('list_exercises', { p_tenant: tenantId }),
-      ]);
+      const [data, items, assignmentRows, exerciseRows, settings] =
+        await Promise.all([
+          fetchWorkspaceData(tenantId),
+          fetchNotifications(tenantId),
+          rpc('list_assignments', { p_tenant: tenantId }),
+          rpc('list_exercises', { p_tenant: tenantId }),
+          rpc('get_tenant_settings', { p_tenant: tenantId }),
+        ]);
       if (active) {
         setMembers(data.members);
         setBookings(data.bookings);
@@ -101,6 +108,7 @@ export function WorkspaceProvider({ children }) {
             isGlobal: exercise.is_global,
           }))
         );
+        setTenantSettings(settings);
       }
     })();
 
@@ -605,6 +613,47 @@ export function WorkspaceProvider({ children }) {
     [tenantId]
   );
 
+  const rescheduleBooking = useCallback(
+    async (id, date, start, end) => {
+      if (DEMO_MODE) {
+        setBookings((current) =>
+          current.map((booking) =>
+            booking.id === id
+              ? { ...booking, date, start, end }
+              : booking
+          )
+        );
+        return;
+      }
+
+      await rpc('reschedule_booking', {
+        p_booking: id,
+        p_start_at: `${date}T${start}:00+08:00`,
+        p_end_at: `${date}T${end}:00+08:00`,
+      });
+      await refresh();
+    },
+    [refresh]
+  );
+
+  const updateTenantSettings = useCallback(
+    async (values) => {
+      if (DEMO_MODE) {
+        setTenantSettings((current) => ({ ...current, ...values }));
+        return;
+      }
+
+      await rpc('update_tenant_settings', {
+        p_tenant: tenantId,
+        p_default_session_minutes: values.defaultSessionMinutes,
+        p_max_session_minutes: values.maxSessionMinutes,
+        p_timezone: values.timezone,
+      });
+      await refresh();
+    },
+    [refresh, tenantId]
+  );
+
   const assignTrainer = useCallback(
     async (trainerId, memberId) => {
       if (DEMO_MODE) {
@@ -740,6 +789,7 @@ export function WorkspaceProvider({ children }) {
       notifications,
       assignments,
       exercises,
+      tenantSettings,
       stats,
       addMember,
       updateMember,
@@ -756,6 +806,8 @@ export function WorkspaceProvider({ children }) {
       markNoShow,
       addProgress,
       createProgram,
+      rescheduleBooking,
+      updateTenantSettings,
       assignTrainer,
       unassignTrainer,
       createExercise,
@@ -771,6 +823,7 @@ export function WorkspaceProvider({ children }) {
       notifications,
       assignments,
       exercises,
+      tenantSettings,
       stats,
       addMember,
       updateMember,
@@ -787,6 +840,8 @@ export function WorkspaceProvider({ children }) {
       markNoShow,
       addProgress,
       createProgram,
+      rescheduleBooking,
+      updateTenantSettings,
       assignTrainer,
       unassignTrainer,
       createExercise,

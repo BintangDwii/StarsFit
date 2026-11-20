@@ -46,9 +46,9 @@
 ## Pertanyaan Terbuka
 
 1. ✅ Trainer assignment eksplisit — sudah diputuskan dan diimplementasikan (`019`).
-2. Apakah member boleh reschedule sendiri atau hanya request ulang?
-3. Berapa default durasi sesi dan apakah bisa berbeda per PT?
-4. Apakah progress record boleh diinput member sendiri?
+2. ✅ Reschedule member diizinkan untuk booking pending/confirmed (`021`/F17).
+3. ✅ Durasi default & maksimal dapat diatur per tenant, default 60/120 menit (`021`).
+4. ✅ Member boleh menginput progress dirinya sendiri (`022`).
 5. ✅ Exercise library — global + tenant-specific (`020`).
 
 ## Modul Terkait

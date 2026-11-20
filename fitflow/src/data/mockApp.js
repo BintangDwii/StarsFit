@@ -337,3 +337,11 @@ export const demoExercises = [
   { id: 'ex5', name: 'Overhead Press', muscleGroup: 'Shoulders', equipment: 'Barbell', description: 'Standing overhead press.', isGlobal: true },
   { id: 'ex6', name: 'Cable Row', muscleGroup: 'Back', equipment: 'Cable', description: 'Studio cable row.', isGlobal: false },
 ];
+
+export const demoTenantSettings = {
+  timezone: 'Asia/Makassar',
+  defaultSessionMinutes: 60,
+  maxSessionMinutes: 120,
+  role: 'owner',
+  workspaceName: 'My Workspace',
+};

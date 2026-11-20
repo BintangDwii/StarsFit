@@ -22,6 +22,7 @@ Blueprint modular untuk implementasi **frontend FitFlow** (white & blue). Dijala
 | F14 | [Hardening](14-production-hardening.md) | Notifikasi, settings, error boundary, font lokal |
 | F15 | [Supabase Integration](15-supabase-integration.md) | Auth, tenant, guard, realtime, cron |
 | F16 | [Team & Library](16-team-and-library.md) | Trainer assignment, exercise library |
+| F17 | [Product Decisions](17-product-decisions.md) | Reschedule, durasi tenant, progress member, live smoke |
 
 ## Dependency
 

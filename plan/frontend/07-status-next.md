@@ -33,6 +33,10 @@
 | RLS hardening `018` + audit | ✅ Implemented |
 | Trainer assignment `019` + UI | ✅ Implemented |
 | Exercise library `020` + UI | ✅ Implemented |
+| Reschedule member | ✅ Implemented (F17) |
+| Durasi sesi per tenant `021` | ✅ Implemented (F17) |
+| Progress input member `022` | ✅ Implemented (F17) |
+| Live smoke script | ✅ Implemented (belum dijalankan) |
 
 Data aplikasi sengaja mock. Tidak ada klaim bahwa angka tersebut berasal dari database.
 
@@ -54,7 +58,8 @@ F15 dan hardening selesai. Yang tersisa sebelum produksi:
 4. Uji RPC live: CRUD member, quota, booking lifecycle.
 5. Uji realtime booking, kuota, dan notifikasi.
 6. Jalankan checklist audit di `../15-rls-audit.md`.
-7. Putuskan sisa pertanyaan produk: reschedule member, durasi sesi, progress input member.
+7. Isi `.env` dengan kredensial dan jalankan `npm run smoke:live` (F17).
+8. Lanjutkan audit RLS produksi setelah data nyata tersedia.
 
 ## Catatan
 

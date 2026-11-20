@@ -31,9 +31,7 @@ begin
 
   v_minutes := extract(epoch from (p_end_at - p_start_at)) / 60;
 
-  if v_minutes < 15 or v_minutes > 240 then
-    raise exception 'INVALID_DURATION' using errcode = 'P0001';
-  end if;
+  perform public.assert_session_duration(p_tenant, v_minutes::integer);
 
   if p_start_at <= now() then
     raise exception 'PAST_SLOT' using errcode = 'P0001';
@@ -119,9 +117,7 @@ begin
   v_caller := public.assert_tenant_access(p_tenant);
   perform public.get_tenant_member(p_tenant, p_trainer);
 
-  if p_duration_minutes < 15 or p_duration_minutes > 240 then
-    raise exception 'INVALID_DURATION' using errcode = 'P0001';
-  end if;
+  perform public.assert_session_duration(p_tenant, p_duration_minutes);
 
   select t.timezone into v_tz
   from public.tenants t

@@ -1,10 +1,36 @@
+import { useState } from 'react';
 import { Database, ShieldCheck, UserRound, Users } from 'lucide-react';
 
 import Badge from '../../components/ui/Badge';
+import Field from '../../components/ui/Field';
 import { useWorkspace } from '../../hooks/useWorkspace';
 
 export default function SettingsPage() {
-  const { workspace, demoMode, members, bookings, notifications } = useWorkspace();
+  const {
+    workspace,
+    demoMode,
+    members,
+    bookings,
+    notifications,
+    tenantSettings,
+    updateTenantSettings,
+  } = useWorkspace();
+
+  const [duration, setDuration] = useState({
+    defaultSessionMinutes: tenantSettings.defaultSessionMinutes,
+    maxSessionMinutes: tenantSettings.maxSessionMinutes,
+  });
+  const [saved, setSaved] = useState(false);
+
+  const handleSaveDuration = async (event) => {
+    event.preventDefault();
+    await updateTenantSettings({
+      defaultSessionMinutes: Number(duration.defaultSessionMinutes),
+      maxSessionMinutes: Number(duration.maxSessionMinutes),
+      timezone: tenantSettings.timezone,
+    });
+    setSaved(true);
+  };
 
   return (
     <div className="page-container">
@@ -54,6 +80,62 @@ export default function SettingsPage() {
           </div>
         </section>
       </div>
+
+      <section className="card detail-card">
+        <div className="section-header">
+          <h2>Durasi sesi</h2>
+          {tenantSettings.role === 'owner' && (
+            <Badge status="info">Owner</Badge>
+          )}
+        </div>
+        <p className="muted-copy">
+          Berlaku untuk pembuatan slot booking di workspace ini.
+        </p>
+        <form className="form-grid" onSubmit={handleSaveDuration}>
+          <Field label="Durasi default (menit)">
+            <input
+              type="number"
+              min="15"
+              max="240"
+              value={duration.defaultSessionMinutes}
+              onChange={(event) => {
+                setDuration((current) => ({
+                  ...current,
+                  defaultSessionMinutes: event.target.value,
+                }));
+                setSaved(false);
+              }}
+              disabled={tenantSettings.role !== 'owner'}
+            />
+          </Field>
+          <Field label="Durasi maksimal (menit)">
+            <input
+              type="number"
+              min="15"
+              max="240"
+              value={duration.maxSessionMinutes}
+              onChange={(event) => {
+                setDuration((current) => ({
+                  ...current,
+                  maxSessionMinutes: event.target.value,
+                }));
+                setSaved(false);
+              }}
+              disabled={tenantSettings.role !== 'owner'}
+            />
+          </Field>
+          <div className="field-full settings-save-row">
+            <button
+              className="primary-button"
+              type="submit"
+              disabled={tenantSettings.role !== 'owner'}
+            >
+              Simpan pengaturan
+            </button>
+            {saved && <span className="positive">Tersimpan</span>}
+          </div>
+        </form>
+      </section>
 
       <section className="card detail-card">
         <div className="section-header"><h2>Status integrasi</h2></div>

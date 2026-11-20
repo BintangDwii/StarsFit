@@ -18,6 +18,7 @@
 | Notifikasi DB + realtime (`017`, frontend) | ✅ selesai |
 | Reminder H-1 / 2 jam + Edge Function | ✅ selesai |
 | RLS hardening (`018`) + audit `../15-rls-audit.md` | ✅ selesai |
+| Script live smoke (read-only) | ✅ dibuat — `npm run smoke:live` |
 | Uji dengan kredensial Supabase asli | ⏳ belum (perlu project) |
 
 Semua kode berjalan dalam demo mode tanpa kredensial. Saat `.env` diisi dengan nilai asli, `isSupabaseConfigured` menjadi `true` dan alur auth aktif otomatis.

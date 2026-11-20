@@ -2616,6 +2616,23 @@ a {
   flex: 1;
 }
 
+.settings-save-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.portal-progress-add {
+  margin-top: 14px;
+  background: #fff;
+  color: var(--primary);
+}
+
+.portal-booking-actions {
+  display: flex;
+  gap: 14px;
+}
+
 /* RESPONSIVE */
 
 @media (max-width: 1200px) {
