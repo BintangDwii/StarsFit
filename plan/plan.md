@@ -20,7 +20,8 @@ Blueprint modular untuk **FitFlow**, SaaS Personal Trainer Management Platform (
 | 11 | [Frontend Structure](11-frontend-structure.md) | Stack JS + custom CSS, struktur `src/` |
 | 12 | [Roadmap](12-roadmap.md) | Frontend-first, 6 milestone + dependency |
 | 13 | [Decisions & Risks](13-decisions-risks.md) | Keputusan, risiko, pertanyaan terbuka |
-| FE | [Frontend Blueprint](frontend/plan.md) | Index modul F01–F07 (implementasi UI) |
+| 14 | [RLS Audit](15-rls-audit.md) | Hasil audit isolasi tenant + perbaikan |
+| FE | [Frontend Blueprint](frontend/plan.md) | Index modul F01–F15 (implementasi UI) |
 
 ## Dependency
 
@@ -42,7 +43,9 @@ Blueprint modular untuk **FitFlow**, SaaS Personal Trainer Management Platform (
 | Dokumen plan | ✅ selesai |
 | Migrations `supabase/migrations/001–009` | ✅ dibuat & divalidasi |
 | RPC migrations `010–015` | ✅ dibuat & divalidasi |
-| Cron migration `016` | ✅ dibuat & divalidasi |
+| Notifikasi + reminder `017` | ✅ dibuat & divalidasi |
+| Cron `016` + RLS hardening `018` | ✅ dibuat & divalidasi |
+| Edge Function `session-reminders` | ✅ dibuat |
 | Seed `supabase/seed.sql` | ✅ dibuat & divalidasi |
 | Frontend foundation (`fitflow/`) | ✅ selesai — smoke test 8/8 |
 | Frontend modul F08–F14 | ✅ selesai |
@@ -61,7 +64,8 @@ StarsFit/
 │   ├── 00–13.md
 │   └── frontend/         # modul F01–F15 + index
 ├── supabase/
-│   ├── migrations/       # 001–016
+│   ├── migrations/       # 001–018
+│   ├── functions/        # session-reminders
 │   └── seed.sql
 └── fitflow/              # aplikasi React + Vite (JavaScript)
     ├── public/

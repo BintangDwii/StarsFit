@@ -19,6 +19,8 @@
 | Demo mode saat env Supabase kosong | UI dapat dievaluasi sebelum backend terhubung |
 | Font Inter di-bundle lokal | Tidak bergantung CDN Google Fonts, console bersih |
 | Member portal memakai member demo pilihan | Pengguna bisa mencoba portal tanpa login |
+| Reminder disimpan sebagai notifikasi in-app | Tidak bergantung provider email/push eksternal |
+| Audit RLS terpisah (`15-rls-audit.md`) | Memudahkan verifikasi produksi |
 
 ## Catatan Pra-Production
 
@@ -34,8 +36,8 @@
 
 | Risiko | Dampak | Mitigasi |
 |---|---|---|
-| `attendances` tanpa `tenant_id` | Isolasi tenant bergantung join | Tambah `tenant_id` + composite FK di iterasi berikut |
-| `program_days`/`workout_exercises` tanpa `tenant_id` | Sama seperti di atas | Turunkan via program join; pertimbangkan denormalisasi |
+| `attendances` tanpa `tenant_id` | Isolasi tenant bergantung join | ✅ diperbaiki di `018_rls_hardening.sql` + trigger backfill |
+| `program_days`/`workout_exercises` tanpa `tenant_id` | Sama seperti di atas | ✅ diperbaiki di `018_rls_hardening.sql` (denormalisasi + composite FK) |
 | RLS staff melihat semua member | Trainer bisa lihat member non-assigned | Tambah tabel assignment trainer–member |
 | `quota_ledger UNIQUE(booking_id,event_type)` | Adjustment terkait booking tidak bisa >1 | Adjustment biasanya tidak terikat booking |
 | Timezone | Salah hitung slot | Simpan `timestamptz`, hitung di timezone tenant |

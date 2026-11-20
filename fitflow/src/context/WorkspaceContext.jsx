@@ -17,7 +17,12 @@ import {
 } from '../data/mockApp';
 import { useAuth } from '../hooks/useAuth';
 import { supabase } from '../lib/supabase';
-import { DEMO_MODE, fetchWorkspaceData, rpc } from '../services/api';
+import {
+  DEMO_MODE,
+  fetchNotifications,
+  fetchWorkspaceData,
+  rpc,
+} from '../services/api';
 
 import { WorkspaceContext } from './workspaceContext';
 
@@ -32,7 +37,7 @@ export function WorkspaceProvider({ children }) {
   const [notifications, setNotifications] = useState(demoNotifications);
   const [loading, setLoading] = useState(false);
 
-  const { tenantId: authTenantId } = useAuth();
+  const { tenantId: authTenantId, user } = useAuth();
   const tenantId = authTenantId || demoWorkspace.id;
 
   const refresh = useCallback(async () => {
@@ -40,9 +45,13 @@ export function WorkspaceProvider({ children }) {
 
     setLoading(true);
     try {
-      const data = await fetchWorkspaceData(tenantId);
+      const [data, items] = await Promise.all([
+        fetchWorkspaceData(tenantId),
+        fetchNotifications(tenantId),
+      ]);
       setMembers(data.members);
       setBookings(data.bookings);
+      setNotifications(items);
     } finally {
       setLoading(false);
     }
@@ -54,10 +63,14 @@ export function WorkspaceProvider({ children }) {
     let active = true;
 
     (async () => {
-      const data = await fetchWorkspaceData(tenantId);
+      const [data, items] = await Promise.all([
+        fetchWorkspaceData(tenantId),
+        fetchNotifications(tenantId),
+      ]);
       if (active) {
         setMembers(data.members);
         setBookings(data.bookings);
+        setNotifications(items);
       }
     })();
 
@@ -91,12 +104,22 @@ export function WorkspaceProvider({ children }) {
         },
         () => refresh()
       )
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'notifications',
+          filter: `user_id=eq.${user?.id}`,
+        },
+        () => refresh()
+      )
       .subscribe();
 
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [authTenantId, refresh, tenantId]);
+  }, [authTenantId, refresh, tenantId, user?.id]);
 
   const patchMember = useCallback((id, updater) => {
     setMembers((current) =>
@@ -552,19 +575,30 @@ export function WorkspaceProvider({ children }) {
     [tenantId]
   );
 
-  const markNotificationRead = useCallback((id) => {
-    setNotifications((current) =>
-      current.map((item) =>
-        item.id === id ? { ...item, read: true } : item
-      )
-    );
-  }, []);
+  const markNotificationRead = useCallback(
+    async (id) => {
+      setNotifications((current) =>
+        current.map((item) =>
+          item.id === id ? { ...item, read: true } : item
+        )
+      );
 
-  const markAllNotificationsRead = useCallback(() => {
+      if (!DEMO_MODE) {
+        await rpc('mark_notification_read', { p_notification: id });
+      }
+    },
+    []
+  );
+
+  const markAllNotificationsRead = useCallback(async () => {
     setNotifications((current) =>
       current.map((item) => ({ ...item, read: true }))
     );
-  }, []);
+
+    if (!DEMO_MODE) {
+      await rpc('mark_all_notifications_read', { p_tenant: tenantId });
+    }
+  }, [tenantId]);
 
   const stats = useMemo(() => {
     const activeMembers = members.filter(

@@ -96,6 +96,19 @@ export async function fetchWorkspaceData(tenantId) {
   return { members, bookings };
 }
 
+export async function fetchNotifications(tenantId) {
+  const data = await rpc('get_my_notifications', { p_tenant: tenantId });
+
+  return (data || []).map((item) => ({
+    id: item.id,
+    title: item.title,
+    body: item.body,
+    date: item.created_at.slice(0, 10),
+    read: Boolean(item.read_at),
+    type: item.type,
+  }));
+}
+
 export function initialsOf(name = '') {
   return name
     .split(' ')

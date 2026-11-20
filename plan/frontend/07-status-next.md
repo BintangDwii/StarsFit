@@ -28,7 +28,9 @@
 | Realtime bookings & quota | ✅ Implemented (F15) |
 | Real member data | ⏳ Belum (perlu kredensial Supabase) |
 | Cron expiry `016` | ✅ Implemented |
-| Edge Function reminder | ⏳ Belum |
+| Notifikasi DB + realtime `017` | ✅ Implemented |
+| Edge Function reminder | ✅ Implemented |
+| RLS hardening `018` + audit | ✅ Implemented |
 
 Data aplikasi sengaja mock. Tidak ada klaim bahwa angka tersebut berasal dari database.
 
@@ -40,17 +42,17 @@ Data aplikasi sengaja mock. Tidak ada klaim bahwa angka tersebut berasal dari da
 - Mobile trainer: tidak ada overflow, sidebar off-canvas berfungsi.
 - Member portal: bottom nav 5 item, kartu kuota gradasi biru, slot booking responsif.
 
-## Langkah Berikutnya — Uji Live & Reminder
+## Langkah Berikutnya — Uji Live
 
-F15 sudah diimplementasikan (`15-supabase-integration.md`). Yang tersisa:
+F15 dan hardening selesai. Yang tersisa sebelum produksi:
 
 1. Salin `.env.example` → `.env` dan isi kredensial project Supabase.
-2. Jalankan migrations `001–016` + `seed.sql` via `supabase db reset`.
+2. Jalankan migrations `001–018` + `seed.sql` via `supabase db reset`.
 3. Uji login owner/trainer/member dan route guard.
 4. Uji RPC live: CRUD member, quota, booking lifecycle.
-5. Uji realtime booking & kuota.
-6. Implementasi Edge Function reminder H-1 / beberapa jam sebelum sesi.
-7. Audit RLS final sebelum produksi.
+5. Uji realtime booking, kuota, dan notifikasi.
+6. Jalankan checklist audit di `../15-rls-audit.md`.
+7. Putuskan assignment trainer–member dan scope exercise library.
 
 ## Catatan
 

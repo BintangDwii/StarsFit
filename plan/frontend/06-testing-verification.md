@@ -47,7 +47,7 @@ Interaksi yang diuji: tambah member (8→9 baris), navigasi detail, tab Quota, p
 
 ## Backend
 
-- 15 migrasi SQL (001–015) + `seed.sql` berhasil dijalankan di Postgres 15 lokal.
+- 18 migrasi SQL (001–018) + `seed.sql` berhasil dijalankan di Postgres 15 lokal.
 - RPC lifecycle test: request → approve (idempotent) → check-in → complete → ledger reservation -1 + consumed 0, saldo 12→11 tanpa double deduction.
 
 ## Metode Screenshot
@@ -67,10 +67,16 @@ Screenshot disimpan di root project `fitflow/` untuk evaluasi visual, bukan arte
 | `/login` dalam demo mode | ✅ tampil, tanpa error, tombol masuk ke dashboard |
 | Guard trainer/member | ✅ demo mode langsung lolos; live mode siap redirect |
 | Semua 15 route setelah wiring auth | ✅ tetap render, 0 console error |
-| Migrasi `016_cron_jobs.sql` | ✅ lolos di Postgres 15 lokal |
+| Migrasi `016`–`018` + seed | ✅ lolos di Postgres 15 lokal |
+| RPC lifecycle setelah RLS hardening | ✅ lolos (check-in→complete tidak gagal) |
+| Reminder & notifikasi (`017`) | ✅ 1 reminder 24h dibuat, `get_my_notifications` & `mark_all_notifications_read` lolos |
 | Build & lint | ✅ bersih, tidak ada chunk warning |
 
-Perbaikan saat verifikasi: dollar-quoting bertabrakan dengan `DO $$`, diganti `$job$` pada argumen `cron.schedule`.
+Perbaikan saat verifikasi:
+
+- Dollar-quoting bertabrakan dengan `DO $$`, diganti `$job$` pada argumen `cron.schedule`.
+- Ambiguitas `tenant_id` di policy RLS diperbaiki dengan nama tabel yang memenuhi syarat.
+- `attendances.tenant_id NOT NULL` membuat RPC check-in gagal → ditambah trigger `fill_attendance_tenant`.
 
 ## Perbaikan Hardening
 

@@ -15,6 +15,9 @@
 | Logout topbar & portal | ✅ selesai |
 | Realtime bookings + quota_ledger | ✅ selesai |
 | Cron expiry (`016_cron_jobs.sql`) | ✅ selesai |
+| Notifikasi DB + realtime (`017`, frontend) | ✅ selesai |
+| Reminder H-1 / 2 jam + Edge Function | ✅ selesai |
+| RLS hardening (`018`) + audit `../15-rls-audit.md` | ✅ selesai |
 | Uji dengan kredensial Supabase asli | ⏳ belum (perlu project) |
 
 Semua kode berjalan dalam demo mode tanpa kredensial. Saat `.env` diisi dengan nilai asli, `isSupabaseConfigured` menjadi `true` dan alur auth aktif otomatis.
@@ -23,7 +26,7 @@ Semua kode berjalan dalam demo mode tanpa kredensial. Saat `.env` diisi dengan n
 
 - Project Supabase aktif.
 - `.env.example` disalin ke `.env` dengan `VITE_SUPABASE_URL` dan `VITE_SUPABASE_ANON_KEY` asli.
-- Migrations `supabase/migrations/001–016` dan `supabase/seed.sql` dijalankan.
+- Migrations `supabase/migrations/001–018` dan `supabase/seed.sql` dijalankan.
 
 ## Langkah
 
@@ -65,13 +68,16 @@ Redirect ke `/login` jika belum login, ke `/m/home` jika role member mengakses `
 
 - Subscribe perubahan `bookings` dan `quota_ledger` untuk tenant aktif (sudah diimplementasikan di `WorkspaceContext`).
 - Setiap event memanggil `refresh()` sehingga data dan saldo kuota langsung terbarui.
-- Notifikasi dari perubahan status booking (belum).
+- Notifikasi dibaca dari tabel `notifications` (`017`) dan ikut terbarui via realtime.
+- Reminder H-1 / 2 jam dibuat RPC `create_session_reminders()` dan dijalankan pg_cron tiap 15 menit.
+- Edge Function `supabase/functions/session-reminders` membungkus RPC untuk pemanggilan terjadwal/eksternal.
 
 ### 7. Background Jobs
 
-- `expire_pending_bookings()` — pg_cron setiap menit.
-- `expire_quotas()` — pg_cron harian.
-- Reminder H-1 / beberapa jam sebelum sesi (Edge Function).
+- `expire_pending_bookings()` — pg_cron setiap 5 menit.
+- `expire_quotas()` — pg_cron setiap jam.
+- `create_session_reminders()` — pg_cron setiap 15 menit, mengisi tabel `notifications`.
+- Edge Function `session-reminders` sebagai wrapper opsional (webhook jika `REMINDER_WEBHOOK_URL` diisi).
 
 ## Verifikasi
 
