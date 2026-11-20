@@ -38,7 +38,7 @@ npm run lint      # oxlint
 
 | Grup | Route | Hasil |
 |---|---|---|
-| Trainer | `/`, `/members`, `/members/:id`, `/calendar`, `/quota`, `/attendance`, `/workouts`, `/progress`, `/settings` | ✅ 9/9 render, h1 sesuai, tanpa overflow |
+| Trainer | `/`, `/members`, `/members/:id`, `/calendar`, `/quota`, `/attendance`, `/workouts`, `/exercises`, `/progress`, `/settings` | ✅ 10/10 render, h1 sesuai, tanpa overflow |
 | Portal | `/m`, `/m/home`, `/m/booking`, `/m/workout`, `/m/progress`, `/m/profile` | ✅ 6/6 render, bottom nav 5 item, tanpa overflow |
 | Notifikasi | Dropdown topbar | ✅ 3notifikasi tampil |
 | Console | Semua route desktop + mobile | ✅ 0 error |
@@ -47,7 +47,7 @@ Interaksi yang diuji: tambah member (8→9 baris), navigasi detail, tab Quota, p
 
 ## Backend
 
-- 18 migrasi SQL (001–018) + `seed.sql` berhasil dijalankan di Postgres 15 lokal.
+- 20 migrasi SQL (001–020) + `seed.sql` berhasil dijalankan di Postgres 15 lokal.
 - RPC lifecycle test: request → approve (idempotent) → check-in → complete → ledger reservation -1 + consumed 0, saldo 12→11 tanpa double deduction.
 
 ## Metode Screenshot
@@ -67,7 +67,9 @@ Screenshot disimpan di root project `fitflow/` untuk evaluasi visual, bukan arte
 | `/login` dalam demo mode | ✅ tampil, tanpa error, tombol masuk ke dashboard |
 | Guard trainer/member | ✅ demo mode langsung lolos; live mode siap redirect |
 | Semua 15 route setelah wiring auth | ✅ tetap render, 0 console error |
-| Migrasi `016`–`018` + seed | ✅ lolos di Postgres 15 lokal |
+| Migrasi `016`–`020` + seed | ✅ lolos di Postgres 15 lokal |
+| Isolasi trainer (assign/unassign) | ✅ 4 → 3 → 2 member terlihat |
+| Exercise scope | ✅ 5 global + 1 studio exercise |
 | RPC lifecycle setelah RLS hardening | ✅ lolos (check-in→complete tidak gagal) |
 | Reminder & notifikasi (`017`) | ✅ 1 reminder 24h dibuat, `get_my_notifications` & `mark_all_notifications_read` lolos |
 | Build & lint | ✅ bersih, tidak ada chunk warning |

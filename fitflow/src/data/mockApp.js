@@ -318,3 +318,22 @@ export const demoNotifications = [
   { id: 'n2', title: 'Kuota hampir habis', body: 'Andi Pratama tersisa 1 sesi.', date: dayOffset(0), read: false },
   { id: 'n3', title: 'Sesi selesai', body: 'Rizky Ramadhan menyelesaikan sesi latihan.', date: dayOffset(-2), read: true },
 ];
+
+export const demoAssignments = [
+  { id: 'as1', trainerId: 't1', memberId: 'm1' },
+  { id: 'as2', trainerId: 't1', memberId: 'm2' },
+  { id: 'as3', trainerId: 't1', memberId: 'm3' },
+  { id: 'as4', trainerId: 't1', memberId: 'm4' },
+  { id: 'as5', trainerId: 't1', memberId: 'm5' },
+  { id: 'as6', trainerId: 't1', memberId: 'm7' },
+  { id: 'as7', trainerId: 't2', memberId: 'm8' },
+];
+
+export const demoExercises = [
+  { id: 'ex1', name: 'Barbell Squat', muscleGroup: 'Legs', equipment: 'Barbell', description: 'Compound squat.', isGlobal: true },
+  { id: 'ex2', name: 'Bench Press', muscleGroup: 'Chest', equipment: 'Barbell', description: 'Flat bench press.', isGlobal: true },
+  { id: 'ex3', name: 'Deadlift', muscleGroup: 'Back', equipment: 'Barbell', description: 'Conventional deadlift.', isGlobal: true },
+  { id: 'ex4', name: 'Pull Up', muscleGroup: 'Back', equipment: 'Bodyweight', description: 'Bodyweight pull up.', isGlobal: true },
+  { id: 'ex5', name: 'Overhead Press', muscleGroup: 'Shoulders', equipment: 'Barbell', description: 'Standing overhead press.', isGlobal: true },
+  { id: 'ex6', name: 'Cable Row', muscleGroup: 'Back', equipment: 'Cable', description: 'Studio cable row.', isGlobal: false },
+];

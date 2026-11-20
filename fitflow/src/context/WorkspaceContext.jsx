@@ -6,7 +6,9 @@ import {
 } from 'react';
 
 import {
+  demoAssignments,
   demoBookings,
+  demoExercises,
   demoMembers,
   demoNotifications,
   demoProgress,
@@ -35,6 +37,8 @@ export function WorkspaceProvider({ children }) {
   const [programs, setPrograms] = useState(demoPrograms);
   const [progress, setProgress] = useState(demoProgress);
   const [notifications, setNotifications] = useState(demoNotifications);
+  const [assignments, setAssignments] = useState(demoAssignments);
+  const [exercises, setExercises] = useState(demoExercises);
   const [loading, setLoading] = useState(false);
 
   const { tenantId: authTenantId, user } = useAuth();
@@ -45,13 +49,26 @@ export function WorkspaceProvider({ children }) {
 
     setLoading(true);
     try {
-      const [data, items] = await Promise.all([
+      const [data, items, assignmentRows, exerciseRows] = await Promise.all([
         fetchWorkspaceData(tenantId),
         fetchNotifications(tenantId),
+        rpc('list_assignments', { p_tenant: tenantId }),
+        rpc('list_exercises', { p_tenant: tenantId }),
       ]);
       setMembers(data.members);
       setBookings(data.bookings);
       setNotifications(items);
+      setAssignments(assignmentRows || []);
+      setExercises(
+        (exerciseRows || []).map((exercise) => ({
+          id: exercise.id,
+          name: exercise.name,
+          muscleGroup: exercise.muscle_group,
+          equipment: exercise.equipment,
+          description: exercise.description,
+          isGlobal: exercise.is_global,
+        }))
+      );
     } finally {
       setLoading(false);
     }
@@ -63,14 +80,27 @@ export function WorkspaceProvider({ children }) {
     let active = true;
 
     (async () => {
-      const [data, items] = await Promise.all([
+      const [data, items, assignmentRows, exerciseRows] = await Promise.all([
         fetchWorkspaceData(tenantId),
         fetchNotifications(tenantId),
+        rpc('list_assignments', { p_tenant: tenantId }),
+        rpc('list_exercises', { p_tenant: tenantId }),
       ]);
       if (active) {
         setMembers(data.members);
         setBookings(data.bookings);
         setNotifications(items);
+        setAssignments(assignmentRows || []);
+        setExercises(
+          (exerciseRows || []).map((exercise) => ({
+            id: exercise.id,
+            name: exercise.name,
+            muscleGroup: exercise.muscle_group,
+            equipment: exercise.equipment,
+            description: exercise.description,
+            isGlobal: exercise.is_global,
+          }))
+        );
       }
     })();
 
@@ -575,6 +605,80 @@ export function WorkspaceProvider({ children }) {
     [tenantId]
   );
 
+  const assignTrainer = useCallback(
+    async (trainerId, memberId) => {
+      if (DEMO_MODE) {
+        setAssignments((current) =>
+          current.some(
+            (item) => item.trainerId === trainerId && item.memberId === memberId
+          )
+            ? current
+            : [...current, { id: newId('as'), trainerId, memberId }]
+        );
+        return;
+      }
+
+      await rpc('assign_trainer', {
+        p_tenant: tenantId,
+        p_trainer: trainerId,
+        p_member: memberId,
+      });
+      await refresh();
+    },
+    [refresh, tenantId]
+  );
+
+  const unassignTrainer = useCallback(
+    async (trainerId, memberId) => {
+      if (DEMO_MODE) {
+        setAssignments((current) =>
+          current.filter(
+            (item) =>
+              !(item.trainerId === trainerId && item.memberId === memberId)
+          )
+        );
+        return;
+      }
+
+      await rpc('unassign_trainer', {
+        p_tenant: tenantId,
+        p_trainer: trainerId,
+        p_member: memberId,
+      });
+      await refresh();
+    },
+    [refresh, tenantId]
+  );
+
+  const createExercise = useCallback(
+    async (payload) => {
+      if (DEMO_MODE) {
+        setExercises((current) => [
+          {
+            id: newId('ex'),
+            name: payload.name,
+            muscleGroup: payload.muscleGroup || '',
+            equipment: payload.equipment || '',
+            description: payload.description || '',
+            isGlobal: false,
+          },
+          ...current,
+        ]);
+        return;
+      }
+
+      await rpc('create_exercise', {
+        p_tenant: tenantId,
+        p_name: payload.name,
+        p_muscle_group: payload.muscleGroup || null,
+        p_equipment: payload.equipment || null,
+        p_description: payload.description || null,
+      });
+      await refresh();
+    },
+    [refresh, tenantId]
+  );
+
   const markNotificationRead = useCallback(
     async (id) => {
       setNotifications((current) =>
@@ -634,6 +738,8 @@ export function WorkspaceProvider({ children }) {
       programs,
       progress,
       notifications,
+      assignments,
+      exercises,
       stats,
       addMember,
       updateMember,
@@ -650,6 +756,9 @@ export function WorkspaceProvider({ children }) {
       markNoShow,
       addProgress,
       createProgram,
+      assignTrainer,
+      unassignTrainer,
+      createExercise,
       markNotificationRead,
       markAllNotificationsRead,
     }),
@@ -660,6 +769,8 @@ export function WorkspaceProvider({ children }) {
       programs,
       progress,
       notifications,
+      assignments,
+      exercises,
       stats,
       addMember,
       updateMember,
@@ -676,6 +787,9 @@ export function WorkspaceProvider({ children }) {
       markNoShow,
       addProgress,
       createProgram,
+      assignTrainer,
+      unassignTrainer,
+      createExercise,
       markNotificationRead,
       markAllNotificationsRead,
     ]

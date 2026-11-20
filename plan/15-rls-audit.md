@@ -4,7 +4,7 @@
 
 ## Ringkasan
 
-Audit dilakukan terhadap `supabase/migrations/001–018`. Fokus: setiap tabel domain memiliki `tenant_id`, policy tidak bergantung pada join yang bisa salah, dan client tidak bisa menulis langsung ke tabel sensitif.
+Audit dilakukan terhadap `supabase/migrations/001–020`. Fokus: setiap tabel domain memiliki `tenant_id`, policy tidak bergantung pada join yang bisa salah, dan client tidak bisa menulis langsung ke tabel sensitif.
 
 ## Temuan & Perbaikan
 
@@ -17,8 +17,8 @@ Audit dilakukan terhadap `supabase/migrations/001–018`. Fokus: setiap tabel do
 | 5 | Helper RLS memakai `SECURITY DEFINER` | ✅ aman | `search_path = ''` atau `public, pg_temp`, validasi `auth.uid()` eksplisit |
 | 6 | Job expiry bisa dipanggil user biasa | ✅ aman | `expire_pending_bookings` / `expire_quotas` tidak di-`grant` ke `authenticated` |
 | 7 | Notifikasi lintas user | ✅ aman | `017` — policy `user_id = auth.uid() AND is_tenant_member(tenant_id)` |
-| 8 | Staff melihat semua member tenant | ⚠️ terbuka | Belum ada assignment trainer–member; sesuai keputusan di `13-decisions-risks.md` |
-| 9 | `exercises` bersifat global | ⚠️ terbuka | Masih menjadi pertanyaan terbuka: global vs per tenant |
+| 8 | Trainer melihat semua member tenant | ✅ diperbaiki | `019_trainer_assignment.sql` — `can_view_member()` dipakai `list_members`, `assert_self_or_staff`, dan RPC booking |
+| 9 | `exercises` bersifat global | ✅ diperbaiki | `020_exercise_library.sql` — `tenant_id` nullable: NULL = global, UUID tenant = studio |
 | 10 | Realtime pada `postgres_changes` | ✅ aman | Filter `tenant_id=eq.<uuid>` / `user_id=eq.<uuid>`; RLS tetap berlaku untuk channel authenticated |
 
 ## Verifikasi yang Perlu Dilakukan di Supabase
@@ -34,10 +34,13 @@ where table_schema = 'public'
     'tenants', 'tenant_members', 'member_profiles', 'member_quotas',
     'quota_ledger', 'bookings', 'notifications', 'trainer_availability',
     'trainer_availability_exceptions', 'attendances', 'workout_programs',
-    'program_days', 'workout_exercises', 'progress_records'
+    'program_days', 'workout_exercises', 'progress_records',
+    'trainer_assignments', 'exercises', 'notifications'
   )
   and column_name = 'tenant_id'
 order by table_name;
+
+-- Catatan: exercises.tenant_id sengaja nullable (NULL = exercise global).
 
 -- 2. Tidak ada policy tulis untuk tabel sensitif
 select tablename, cmd, policyname

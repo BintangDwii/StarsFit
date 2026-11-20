@@ -265,6 +265,7 @@ begin
   end if;
 
   v_staff := public.assert_staff(v_booking.tenant_id);
+  perform public.assert_self_or_staff(v_booking.tenant_id, v_booking.member_id);
 
   perform public.assert_booking_slot(
     v_booking.tenant_id,
@@ -325,6 +326,7 @@ begin
   end if;
 
   perform public.assert_staff(v_booking.tenant_id);
+  perform public.assert_self_or_staff(v_booking.tenant_id, v_booking.member_id);
 
   update public.bookings
   set status = 'rejected'
@@ -460,6 +462,7 @@ begin
   end if;
 
   perform public.assert_staff(v_booking.tenant_id);
+  perform public.assert_self_or_staff(v_booking.tenant_id, v_booking.member_id);
 
   if v_booking.status = 'checked_in' then
     return;
@@ -503,6 +506,7 @@ begin
   end if;
 
   v_staff := public.assert_staff(v_booking.tenant_id);
+  perform public.assert_self_or_staff(v_booking.tenant_id, v_booking.member_id);
 
   if v_booking.status = 'completed' then
     return;
@@ -560,6 +564,7 @@ begin
   end if;
 
   v_staff := public.assert_staff(v_booking.tenant_id);
+  perform public.assert_self_or_staff(v_booking.tenant_id, v_booking.member_id);
 
   if v_booking.status = 'no_show' then
     return;

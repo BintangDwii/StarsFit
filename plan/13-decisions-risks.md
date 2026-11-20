@@ -38,18 +38,18 @@
 |---|---|---|
 | `attendances` tanpa `tenant_id` | Isolasi tenant bergantung join | ✅ diperbaiki di `018_rls_hardening.sql` + trigger backfill |
 | `program_days`/`workout_exercises` tanpa `tenant_id` | Sama seperti di atas | ✅ diperbaiki di `018_rls_hardening.sql` (denormalisasi + composite FK) |
-| RLS staff melihat semua member | Trainer bisa lihat member non-assigned | Tambah tabel assignment trainer–member |
+| RLS staff melihat semua member | Trainer bisa lihat member non-assigned | ✅ diperbaiki di `019_trainer_assignment.sql` |
 | `quota_ledger UNIQUE(booking_id,event_type)` | Adjustment terkait booking tidak bisa >1 | Adjustment biasanya tidak terikat booking |
 | Timezone | Salah hitung slot | Simpan `timestamptz`, hitung di timezone tenant |
 | Pending memblokir slot | Slot "hilang" saat pending | Auto-expire pending |
 
 ## Pertanyaan Terbuka
 
-1. Apakah trainer perlu assignment eksplisit per member? (saat ini staff = semua member tenant)
+1. ✅ Trainer assignment eksplisit — sudah diputuskan dan diimplementasikan (`019`).
 2. Apakah member boleh reschedule sendiri atau hanya request ulang?
 3. Berapa default durasi sesi dan apakah bisa berbeda per PT?
 4. Apakah progress record boleh diinput member sendiri?
-5. Apakah exercise library global atau per tenant?
+5. ✅ Exercise library — global + tenant-specific (`020`).
 
 ## Modul Terkait
 

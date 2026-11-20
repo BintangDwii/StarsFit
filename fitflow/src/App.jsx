@@ -5,14 +5,16 @@ import AppLayout from './layouts/AppLayout';
 import LoginPage from './pages/auth/LoginPage';
 import { RequireMember, RequireTrainer } from './components/common/RouteGuards';
 import DashboardPage from './pages/trainer/DashboardPage';
-import CalendarPage from './pages/calendar/CalendarPage';
-import AttendancePage from './pages/trainer/AttendancePage';
-import QuotaPage from './pages/quota/QuotaPage';
-import WorkoutsPage from './pages/workouts/WorkoutsPage';
-import ProgressPage from './pages/progress/ProgressPage';
-import SettingsPage from './pages/trainer/SettingsPage';
-import MembersPage from './pages/members/MembersPage';
-import MemberDetailPage from './pages/members/MemberDetailPage';
+
+const CalendarPage = lazy(() => import('./pages/calendar/CalendarPage'));
+const AttendancePage = lazy(() => import('./pages/trainer/AttendancePage'));
+const QuotaPage = lazy(() => import('./pages/quota/QuotaPage'));
+const WorkoutsPage = lazy(() => import('./pages/workouts/WorkoutsPage'));
+const ExercisesPage = lazy(() => import('./pages/workouts/ExercisesPage'));
+const ProgressPage = lazy(() => import('./pages/progress/ProgressPage'));
+const SettingsPage = lazy(() => import('./pages/trainer/SettingsPage'));
+const MembersPage = lazy(() => import('./pages/members/MembersPage'));
+const MemberDetailPage = lazy(() => import('./pages/members/MemberDetailPage'));
 const MemberPortalLayout = lazy(() => import('./layouts/MemberPortalLayout'));
 const MemberHomePage = lazy(() => import('./pages/member/MemberHomePage'));
 const MemberBookingPage = lazy(() => import('./pages/member/MemberBookingPage'));
@@ -50,6 +52,7 @@ export default function App() {
 
           <Route path="/attendance" element={<AttendancePage />} />
           <Route path="/workouts" element={<WorkoutsPage />} />
+          <Route path="/exercises" element={<ExercisesPage />} />
           <Route path="/progress" element={<ProgressPage />} />
 
           <Route path="/settings" element={<SettingsPage />} />

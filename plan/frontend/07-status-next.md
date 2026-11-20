@@ -31,6 +31,8 @@
 | Notifikasi DB + realtime `017` | ✅ Implemented |
 | Edge Function reminder | ✅ Implemented |
 | RLS hardening `018` + audit | ✅ Implemented |
+| Trainer assignment `019` + UI | ✅ Implemented |
+| Exercise library `020` + UI | ✅ Implemented |
 
 Data aplikasi sengaja mock. Tidak ada klaim bahwa angka tersebut berasal dari database.
 
@@ -52,7 +54,7 @@ F15 dan hardening selesai. Yang tersisa sebelum produksi:
 4. Uji RPC live: CRUD member, quota, booking lifecycle.
 5. Uji realtime booking, kuota, dan notifikasi.
 6. Jalankan checklist audit di `../15-rls-audit.md`.
-7. Putuskan assignment trainer–member dan scope exercise library.
+7. Putuskan sisa pertanyaan produk: reschedule member, durasi sesi, progress input member.
 
 ## Catatan
 

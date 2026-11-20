@@ -2582,6 +2582,40 @@ a {
   font-size: 10px;
 }
 
+.assignment-list {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 14px;
+}
+
+.assignment-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid #F1F4F8;
+  font-size: 11px;
+}
+
+.assignment-row .member-avatar {
+  width: 30px;
+  height: 30px;
+  font-size: 9px;
+}
+
+.assignment-row span {
+  flex: 1;
+}
+
+.assignment-form {
+  display: flex;
+  gap: 8px;
+}
+
+.assignment-form .filter-select {
+  flex: 1;
+}
+
 /* RESPONSIVE */
 
 @media (max-width: 1200px) {

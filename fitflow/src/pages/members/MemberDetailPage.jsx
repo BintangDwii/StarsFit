@@ -70,6 +70,10 @@ export default function MemberDetailPage() {
     bookings,
     programs,
     progress,
+    trainers,
+    assignments,
+    assignTrainer,
+    unassignTrainer,
     adjustQuota,
     createQuota,
     approveBooking,
@@ -88,6 +92,7 @@ export default function MemberDetailPage() {
   const [editModal, setEditModal] = useState(false);
   const [progressModal, setProgressModal] = useState(false);
   const [programTitle, setProgramTitle] = useState('');
+  const [trainerChoice, setTrainerChoice] = useState(trainers[0]?.id || '');
   const [progressValues, setProgressValues] = useState({
     weight: '',
     bodyFat: '',
@@ -217,6 +222,55 @@ export default function MemberDetailPage() {
                 <RotateCcw size={15} /> Aktifkan
               </button>
             )}
+          </div>
+        </SectionCard>
+
+        <SectionCard title="Trainer penanggung jawab">
+          <div className="assignment-list">
+            {assignments
+              .filter((item) => item.memberId === member.id)
+              .map((item) => {
+                const trainer = trainers.find((t) => t.id === item.trainerId);
+                return (
+                  <div className="assignment-row" key={item.id}>
+                    <div className="member-avatar">
+                      {trainer?.initials || 'TR'}
+                    </div>
+                    <span>{trainer?.name || 'Trainer'}</span>
+                    <button
+                      className="text-button"
+                      onClick={() => unassignTrainer(item.trainerId, member.id)}
+                    >
+                      Hapus
+                    </button>
+                  </div>
+                );
+              })}
+            {assignments.filter((item) => item.memberId === member.id)
+              .length === 0 && (
+              <p className="muted-copy">Belum ada trainer yang ditugaskan.</p>
+            )}
+          </div>
+
+          <div className="assignment-form">
+            <select
+              className="filter-select"
+              value={trainerChoice}
+              onChange={(event) => setTrainerChoice(event.target.value)}
+              aria-label="Pilih trainer"
+            >
+              {trainers.map((trainer) => (
+                <option key={trainer.id} value={trainer.id}>
+                  {trainer.name}
+                </option>
+              ))}
+            </select>
+            <button
+              className="secondary-button"
+              onClick={() => assignTrainer(trainerChoice, member.id)}
+            >
+              <Plus size={14} /> Tugaskan
+            </button>
           </div>
         </SectionCard>
       </div>

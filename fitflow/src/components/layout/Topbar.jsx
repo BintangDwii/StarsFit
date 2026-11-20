@@ -18,6 +18,7 @@ const routeLabels = {
   '/members': 'Members',
   '/quota': 'Quota Management',
   '/workouts': 'Workout Programs',
+  '/exercises': 'Exercise Library',
   '/progress': 'Progress Tracking',
   '/settings': 'Settings',
 };

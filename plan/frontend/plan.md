@@ -21,6 +21,7 @@ Blueprint modular untuk implementasi **frontend FitFlow** (white & blue). Dijala
 | F13 | [Member Portal](13-member-portal.md) | Bottom nav, booking, workout, progress |
 | F14 | [Hardening](14-production-hardening.md) | Notifikasi, settings, error boundary, font lokal |
 | F15 | [Supabase Integration](15-supabase-integration.md) | Auth, tenant, guard, realtime, cron |
+| F16 | [Team & Library](16-team-and-library.md) | Trainer assignment, exercise library |
 
 ## Dependency
 

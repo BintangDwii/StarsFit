@@ -196,3 +196,17 @@ from (
 where not exists (
   select 1 from public.exercises e where e.name = v.name
 );
+
+-- ============================================================
+-- Trainer assignment
+-- ============================================================
+
+insert into public.trainer_assignments (tenant_id, trainer_id, member_id)
+values
+  ('a0000000-0000-0000-0000-000000000001',
+   'b0000000-0000-0000-0000-000000000002',
+   'b0000000-0000-0000-0000-000000000003'),
+  ('a0000000-0000-0000-0000-000000000001',
+   'b0000000-0000-0000-0000-000000000002',
+   'b0000000-0000-0000-0000-000000000004')
+on conflict (tenant_id, trainer_id, member_id) do nothing;

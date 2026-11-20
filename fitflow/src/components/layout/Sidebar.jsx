@@ -1,6 +1,7 @@
 import {
   Activity,
   BarChart3,
+  BookOpen,
   CalendarDays,
   ClipboardCheck,
   Dumbbell,
@@ -58,6 +59,11 @@ const navigation = [
         name: 'Workout Programs',
         path: '/workouts',
         icon: Dumbbell,
+      },
+      {
+        name: 'Exercise Library',
+        path: '/exercises',
+        icon: BookOpen,
       },
       {
         name: 'Progress Tracking',
